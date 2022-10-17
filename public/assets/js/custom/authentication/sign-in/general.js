@@ -53,7 +53,7 @@ var KTSigninGeneral = function () {
                     })
                     .catch(function (error) {
                         Swal.fire({
-                            text: error.message,
+                            text: error.response.status == 400 ? error.response.data.message : error.message,
                             icon: "error",
                             buttonsStyling: !1,
                             confirmButtonText: "Ok",
