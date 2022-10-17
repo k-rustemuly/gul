@@ -14,7 +14,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'department',
+        'guard' => 'admins',
         'passwords' => 'users',
     ],
 
@@ -40,25 +40,9 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
-        'department' => [
-            'driver' => 'jwt',
-            'provider' => 'department',
-        ],
-        'organization' => [
-            'driver' => 'jwt',
-            'provider' => 'organization',
-        ],
-        'commission' => [
-            'driver' => 'jwt',
-            'provider' => 'commission',
-        ],
-        'staff' => [
-            'driver' => 'jwt',
-            'provider' => 'staff',
-        ],
-        'head_department' => [
-            'driver' => 'jwt',
-            'provider' => 'head_department',
+        'admin' => [
+            'driver' => 'sanctum',
+            'provider' => 'admin',
         ],
     ],
 
@@ -80,30 +64,9 @@ return [
     */
 
     'providers' => [
-        'department' => [
+        'admin' => [
             'driver' => 'eloquent',
-            'model' => App\Edus\Departments\Domain\Models\Department::class,
-            'table' => 'education_department',
-        ],
-        'organization' => [
-            'driver' => 'eloquent',
-            'model' => App\Edus\OrganizationAdmin\Domain\Models\Admin::class,
-            'table' => 'organization_admin',
-        ],
-        'commission' => [
-            'driver' => 'eloquent',
-            'model' => App\Edus\Commissions\Domain\Models\Commission::class,
-            'table' => 'commission',
-        ],
-        'staff' => [
-            'driver' => 'eloquent',
-            'model' => App\Edus\Staff\Domain\Models\Staff::class,
-            'table' => 'staff',
-        ],
-        'head_department' => [
-            'driver' => 'eloquent',
-            'model' => App\Edus\HeadDepartment\Domain\Models\HeadDepartment::class,
-            'table' => 'head_department',
+            'model' => App\Api\User\Domain\Models\Admin::class,
         ],
     ],
 

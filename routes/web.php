@@ -18,5 +18,13 @@ Route::get('/', function () {
 })->name('main');
 
 Route::get('/auth', function () {
-    return view('sign-in', ['title' => 'test']);
+    return view('sign-in');
 });
+
+Route::get('/auth/sign_up', function () { return view('sign-in'); })->name('auth.sign_up');
+Route::get('/auth/forgot_password', function () { return view('sign-in');})->name('auth.forgot_password');
+
+
+Route::get('/dashboard', function () {
+    return view('welcome');
+})->name('dashboard');

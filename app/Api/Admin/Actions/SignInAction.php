@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Api\Smart\Actions;
+namespace App\Api\Admin\Actions;
 
-use App\Api\Smart\Domain\Services\PingService as Service;
+use App\Api\Admin\Domain\Requests\SignInFormRequest as Request;
+use App\Api\Admin\Domain\Services\SignInService as Service;
 use App\Responders\JsonResponder as Responder;
 
-class PingAction
+class SignInAction
 {
 
     public function __construct(Responder $responder, Service $service)
@@ -14,10 +15,10 @@ class PingAction
         $this->service = $service;
     }
 
-    public function __invoke()
+    public function __invoke(Request $request)
     {
         return $this->responder->withResponse(
-            $this->service->handle()
+            $this->service->handle($request->validated())
         )->respond();
     }
 }
