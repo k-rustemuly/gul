@@ -17,10 +17,20 @@ class SignInService extends Service
     public function handle($data = array())
     {
         $user = Admin::where('email', $data["email"])->first();
-        if (! $user || ! Hash::check($data["password"], $user->password)) {
+        if (!$user || !Hash::check($data["password"], $user->password)) {
             throw new MainException("The provided credentials are incorrect");
         }
-        return new GenericPayload(array( $user->createToken("a")->plainTextToken));
+        $token = $user->createToken("a", [
+            "item:create",
+            "item:update",
+            "item:delete",
+        ])->plainTextToken;
+
+        return new GenericPayload([
+            "token" => $token,
+            "name" => $user->name,
+            "email" => $user->email,
+        ]);
     }
 
 }

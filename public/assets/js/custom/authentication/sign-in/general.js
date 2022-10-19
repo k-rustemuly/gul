@@ -39,18 +39,27 @@ var KTSigninGeneral = function () {
                 n.preventDefault(),
                 i.validate().then((function (i) {
                     "Valid" == i ? (e.setAttribute("data-kt-indicator", "on"), e.disabled =! 0, 
-                    axios.post(t.getAttribute("data-url"), {
-                        email: t.querySelector('[name="email"]').value,
-                        password: t.querySelector('[name="password"]').value
+                    axios.get('/sanctum/csrf-cookie').then(response => {
+                        axios.post(t.getAttribute("data-url"), {
+                            email: t.querySelector('[name="email"]').value,
+                            password: t.querySelector('[name="password"]').value
+                        })
+                        .then(function (response) {
+                            if(response.status == 200){
+                                var data = response.data;
+                                localStorage.setItem('token', data.token??0);
+                                localStorage.setItem('name', data.name??0);
+                                localStorage.setItem('email', data.email??0);
+                                e.removeAttribute("data-kt-indicator"),
+                                e.disabled = !1,
+                                t.querySelector('[name="email"]').value = "",
+                                t.querySelector('[name="password"]').value = "";
+                                var i = t.getAttribute("data-kt-redirect-url");
+                                i && (location.href = i)    
+                            }
+                        })
                     })
-                    .then(function (response) {
-                        e.removeAttribute("data-kt-indicator"),
-                        e.disabled = !1,
-                        t.querySelector('[name="email"]').value = "",
-                        t.querySelector('[name="password"]').value = "";
-                        var i = t.getAttribute("data-kt-redirect-url");
-                        i && (location.href = i)
-                    })
+                    
                     .catch(function (error) {
                         Swal.fire({
                             text: error.response.status == 400 ? error.response.data.message : error.message,
